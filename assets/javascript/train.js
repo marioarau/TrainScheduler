@@ -1,8 +1,17 @@
-/* global moment firebase */
-
 // Initialize Firebase
 // Make sure to match the configuration to the script version number in the HTML
 // config file in firebase_apikey
+/*
+  var config = {
+    apiKey: "AIzaSyDjA2Lp4Qga0i6vs4xUH4-1tCm-nwOYgIk",
+    authDomain: "fullstackclass-15e91.firebaseapp.com",
+    databaseURL: "https://fullstackclass-15e91.firebaseio.com",
+    projectId: "fullstackclass-15e91",
+    storageBucket: "",
+    messagingSenderId: "568587410686",
+    appId: "1:568587410686:web:45efbee524ff27d6"
+  };
+*/
 
 firebase.initializeApp(config);
 
@@ -17,46 +26,62 @@ var connectionsRef = database.ref();
 // '.info/connected' is a special location provided by Firebase that is updated every time
 // the client's connection state changes.
 // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
-var connectedRef = database.ref(".info/connected");
 
-name = "Abraham Lincoln",
-    role = "CEO",
-    startDate = "01/21/2005",
-    monthlyRate = 420
+trainName = "Pacific Surfliner";
+dest = "San Luis Obispo";
+firstTrain = "07:00";
+freq = 120;
 
-name = "George Washington",
-    role = "CEO",
-    startDate = "01/21/2000",
-    monthlyRate = 400
+trainName = "Pacific Surfliner";
+dest = "San Diego";
+firstTrain = "06:00";
+freq = 120;
 
-name = "John F Kennedy",
-    role = "CEO",
-    startDate = "01/21/1963",
-    monthlyRate = 450
+trainName = "Pacific Surfliner";
+dest = "San Luis Obispo";
+firstTrain = "07:00";
+freq = 120;
+
+var add_a_train = false;
+
+if (add_a_train == true) {
+    database.ref().push({
+        train_name: trainName,
+        destination: dest,
+        first_train: firstTrain,
+        frequency: freq,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+    });
+}
+
 
 database.ref().on("child_added", function (snapshot) {
-    var newRow = $("<tr>").append();
-    $("<td>").text(name);
-    $("<td>").text(role);
-    $("<td>").text(startDate);
-    $("<td>").text(monthlyRate);
-    $("employee-table").append(newRow);
+    var newRow = "<tr>";
+    newRow += "<td>"+snapshot.val().train_name+"</td><td>"+snapshot.val().destination+"</td>";
+    newRow += "<td>"+snapshot.val().first_train+"</td><td>"+snapshot.val().frequency+"</td>";
+    newRow += "<td>empty</td>";
+    newRow += "</tr>";
+    console.log(newRow);
+    $("table tbody").append(newRow);
 });
 
-$("#submitBtn").on("click", function () {
+$("#add-train").on("click", function () {
 
-    name = $("#name-input").val();
-    role = $("#role-input").val();
-    console.log("name: " + name);
-    console.log("role: " + role);
-    startDate = $("#date-input").val();
-    monthlyRate = $("#rate-input").val();
+    trainName = $("#train-name-input").val().trim();
+    dest = $("#dest-input").val().trim();
+    firstTrain = $("#first-train-input").val().trim();
+    freq = $("#freq-input").val().trim();
+    console.log("trainName: "+trainName)
 
+    // Code for the push
     database.ref().push({
-        name: name,
-        role: role,
-        startDate: startDate,
-        monthlyRate: monthlyRate
+        train_name: trainName,
+        destination: dest,
+        first_train: firstTrain,
+        frequency: freq,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
-    debugger;
 });
+
+
+
