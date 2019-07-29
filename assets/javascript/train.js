@@ -84,11 +84,11 @@ function calcTrainTimes(firstTrain, Freq) {
     var next_train_time = start_time.add(x, 'm');
 
     console.log("cur_time: " + cur_time);
-    nextTrain.time = start_time.format("HH:mm");
+    nextTrain.time = start_time.format("hh:mm A");
     console.log("nextTrain: " + JSON.stringify(nextTrain));
     console.log("minutes x: " + x)
     console.log("hours x: " + x / 60)
-    xtime = moment(x, "hh:mm");
+    xtime = moment(x, "hh:mm A");
     console.log("xtime: " + xtime);
     nextTrain.minToNextTrain = moment.duration(next_train_time.diff(cur_time)).asMinutes(); 
     nextTrain.minToNextTrain = parseInt(nextTrain.minToNextTrain);
@@ -102,8 +102,8 @@ database.ref().on("child_added", function (snapshot) {
 
     var newRow = "<tr>";
     newRow += "<td>" + snapshot.val().train_name + "</td><td>" + snapshot.val().destination + "</td>";
-    newRow += "<td> &nbsp; &nbsp; &nbsp; &nbsp; " + snapshot.val().frequency + "</td><td> &nbsp; &nbsp; &nbsp; &nbsp; " + nextTrain.time + "</td>";
-    newRow += "<td> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "+nextTrain.minToNextTrain+"</td>";
+    newRow += "<td> &nbsp; &nbsp; &nbsp; &nbsp; " + snapshot.val().frequency + "</td><td>&nbsp; &nbsp; " + nextTrain.time + "</td>";
+    newRow += "<td align='right'> "+nextTrain.minToNextTrain+"  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>";
     newRow += "</tr>";
     console.log(newRow);
     $("table tbody").append(newRow);
