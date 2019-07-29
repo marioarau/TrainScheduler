@@ -29,8 +29,6 @@ var days = duration.asDays();
 console.log("Hours: " + hours);
 console.log("days: " + days);
 
-
-
 trainName = "Pacific Surfliner";
 dest = "San Luis Obispo";
 firstTrain = "07:00";
@@ -103,7 +101,7 @@ database.ref().on("child_added", function (snapshot) {
     var newRow = "<tr>";
     newRow += "<td>" + snapshot.val().train_name + "</td><td>" + snapshot.val().destination + "</td>";
     newRow += "<td> &nbsp; &nbsp; &nbsp; &nbsp; " + snapshot.val().frequency + "</td><td>&nbsp; &nbsp; " + nextTrain.time + "</td>";
-    newRow += "<td align='right'> "+nextTrain.minToNextTrain+"  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>";
+    newRow += "<td align='right'><span>"+nextTrain.minToNextTrain+"</span></td>";
     newRow += "</tr>";
     console.log(newRow);
     $("table tbody").append(newRow);

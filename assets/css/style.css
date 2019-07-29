@@ -16,7 +16,13 @@ th {
 	font-weight: bold;
 	font-size: 1em;
 }
-td {
+th span {
+ padding-right: 10px;
+}
+td span {
+  padding-right: 3em;
+ }
+ td {
 	/* border: 1px solid rgb(190, 190, 190); */
 	 padding: 4px 10px;
 	 font-weight: 600;
