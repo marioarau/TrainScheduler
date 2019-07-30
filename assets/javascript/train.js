@@ -46,11 +46,11 @@ freq = 120;
 
 //calcTrainTimes(firstTrain, freq);
 
-var add_a_train= false;
+var add_a_train = false;
 
 if (add_a_train == true) {
     database.ref().push({
-        train_name: trainName,
+        name: trainName,
         destination: dest,
         first_train: firstTrain,
         frequency: freq,
@@ -60,8 +60,8 @@ if (add_a_train == true) {
 
 function calcTrainTimes(firstTrain, freq) {
 
-    console.log("firstTrain: "+firstTrain);
-    console.log("freq: "+freq);
+    console.log("firstTrain: " + firstTrain);
+    console.log("freq: " + freq);
 
     hhmm = firstTrain.split(":");
     var hours = hhmm[0];
@@ -77,7 +77,7 @@ function calcTrainTimes(firstTrain, freq) {
     //console.log("cur_time: " + cur_time);
 
     // Calculate when the next train will come in
-    var x = moment.duration(cur_time.diff(start_time)).asMinutes(); 
+    var x = moment.duration(cur_time.diff(start_time)).asMinutes();
     x = parseInt((x + 120) / 120);
     x *= freq; // next train comes at these minutes after the first train
     time.add(x, 'm');
@@ -90,7 +90,7 @@ function calcTrainTimes(firstTrain, freq) {
     console.log("hours x: " + x / 60)
     xtime = moment(x, "hh:mm A");
     console.log("xtime: " + xtime);
-    nextTrain.minToNextTrain = moment.duration(next_train_time.diff(cur_time)).asMinutes(); 
+    nextTrain.minToNextTrain = moment.duration(next_train_time.diff(cur_time)).asMinutes();
     nextTrain.minToNextTrain = parseInt(nextTrain.minToNextTrain);
     console.log("minToNextTrain: " + nextTrain.minToNextTrain);
 
@@ -98,18 +98,35 @@ function calcTrainTimes(firstTrain, freq) {
 
 database.ref().on("child_added", function (snapshot) {
 
-    console.log("snapshot.firstTrain: "+snapshot.val().firstTrain);
+    console.log("snapshot.firstTrain: " + snapshot.val().firstTrain);
 
     calcTrainTimes(snapshot.val().firstTrain, snapshot.val().frequency);
 
     var newRow = "<tr>";
-    newRow += "<td>" + snapshot.val().train_name + "</td><td>" + snapshot.val().destination + "</td>";
-    newRow += "<td> &nbsp; &nbsp; &nbsp; &nbsp; " + snapshot.val().frequency + "</td><td>&nbsp; &nbsp; " + nextTrain.time + "</td>";
-    newRow += "<td align='right'><span>"+nextTrain.minToNextTrain+"</span></td>";
+    newRow += "<td>" + snapshot.val().name + "</td><td>" + snapshot.val().destination + "</td>";
+    newRow += "<td align='right'><span>" + snapshot.val().frequency + "</span></td><td>&nbsp; &nbsp; " + nextTrain.time + "</td>";
+    newRow += "<td align='right'><span>" + nextTrain.minToNextTrain + "</span></td>";
     newRow += "</tr>";
     console.log(newRow);
     $("table tbody").append(newRow);
 });
+
+function validateForm() {
+
+    trainName = $("#train-name-input").val().trim();
+    if (trainName == "" || typeof (trainName) == "string") {
+        alert("Train Name an invalid name or is blank");
+        return (false);
+    }
+    dest = $("#dest-input").val().trim();
+    if (dest == "" || typeof (dest) == "string") {
+        alert("Train Destination is not a valid name or is blank");
+        return (false);
+    }
+    firstTrain = $("#first-train-input").val().trim();
+    freq = $("#freq-input").val().trim();
+    return (true);
+}
 
 $("#add-train").on("click", function () {
 
@@ -118,16 +135,14 @@ $("#add-train").on("click", function () {
     firstTrain = $("#first-train-input").val().trim();
     freq = $("#freq-input").val().trim();
     console.log("trainName: " + trainName)
-
-    // Code for the push
-    database.ref().push({
-        train_name: trainName,
-        destination: dest,
-        first_train: firstTrain,
-        frequency: freq,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
-    });
+    if (validateFrom()) {
+        // Code for the push
+        database.ref().push({
+            name: trainName,
+            destination: dest,
+            firstTrain: firstTrain,
+            frequency: freq,
+            dateAdded: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
 });
-
-
-
