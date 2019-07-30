@@ -44,10 +44,9 @@ dest = "San Luis Obispo";
 firstTrain = "07:00"; // 9am 11am 1pm 3pm 5pm 7pm 9pm
 freq = 120;
 
-calcTrainTimes(firstTrain, freq);
+//calcTrainTimes(firstTrain, freq);
 
-
-var add_a_train = false;
+var add_a_train= false;
 
 if (add_a_train == true) {
     database.ref().push({
@@ -59,7 +58,10 @@ if (add_a_train == true) {
     });
 }
 
-function calcTrainTimes(firstTrain, Freq) {
+function calcTrainTimes(firstTrain, freq) {
+
+    console.log("firstTrain: "+firstTrain);
+    console.log("freq: "+freq);
 
     hhmm = firstTrain.split(":");
     var hours = hhmm[0];
@@ -96,7 +98,9 @@ function calcTrainTimes(firstTrain, Freq) {
 
 database.ref().on("child_added", function (snapshot) {
 
-    calcTrainTimes(snapshot.val().first_train, snapshot.val().frequency);
+    console.log("snapshot.firstTrain: "+snapshot.val().firstTrain);
+
+    calcTrainTimes(snapshot.val().firstTrain, snapshot.val().frequency);
 
     var newRow = "<tr>";
     newRow += "<td>" + snapshot.val().train_name + "</td><td>" + snapshot.val().destination + "</td>";

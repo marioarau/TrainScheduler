@@ -2,12 +2,11 @@
 body {
     padding: 0;
     margin: 0;
-	font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-sfont-weight:-size;
-	: 1.0;
-	font-weight: bold;
+	  font-family: 'Arial', 'Helvetica Neue', Helvetica;
+	  font-weight: bold;
     line-height: 140%;
     color: #444;
-	background-color: #FFF;
+	  background-color: #FFF;
 }
 
 th {
