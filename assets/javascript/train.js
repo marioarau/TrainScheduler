@@ -114,12 +114,12 @@ database.ref().on("child_added", function (snapshot) {
 function validateForm() {
 
     trainName = $("#train-name-input").val().trim();
-    if (trainName == "" || typeof (trainName) == "string") {
+    if (trainName == "" || typeof (trainName) != "string") {
         alert("Train Name an invalid name or is blank");
         return (false);
     }
     dest = $("#dest-input").val().trim();
-    if (dest == "" || typeof (dest) == "string") {
+    if (dest == "" || typeof (dest) != "string") {
         alert("Train Destination is not a valid name or is blank");
         return (false);
     }
@@ -135,7 +135,7 @@ $("#add-train").on("click", function () {
     firstTrain = $("#first-train-input").val().trim();
     freq = $("#freq-input").val().trim();
     console.log("trainName: " + trainName)
-    if (validateFrom()) {
+    if (validateForm()) {
         // Code for the push
         database.ref().push({
             name: trainName,
